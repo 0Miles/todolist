@@ -1,0 +1,15 @@
+<div [ngClass]="{'completed': todo.completed, 'uncompleted': !todo.completed}">
+    <input *ngIf="!enableEditBox" type="checkbox" name="todo" [id]="todo.id" [(ngModel)]="todo.completed">
+    <label *ngIf="!enableEditBox" [for]="todo.id"></label>
+    <div *ngIf="!enableEditBox">
+        <div (click)="showEditBox()">{{ todo.content }}</div>
+        <div>{{ todo.date | relativelyDate }}</div>
+        <button (click)="submitDelete()">x</button>
+    </div>
+    <div *ngIf="enableEditBox">
+        <input type="text" [(ngModel)]="tmpContent">
+        <input type="date" [(ngModel)]="tmpDate">
+        <button (click)="submitEditBox()">儲存修改</button>
+        <button (click)="closeEditBox()">取消</button>
+    </div>
+</div>

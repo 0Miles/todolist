@@ -1,0 +1,19 @@
+<hr>
+
+<input type="radio" name="filter" id="filter-active" value="filter-active" [(ngModel)]="filter"><label
+  for="filter-active">未完成</label>
+<input type="radio" name="filter" id="filter-completed" value="filter-completed" [(ngModel)]="filter"><label
+  for="filter-completed">已完成</label>
+<input type="radio" name="filter" id="filter-all" value="filter-all" [(ngModel)]="filter"><label
+  for="filter-all">全部</label>
+<button (click)="base.clearCompleted()">清除已完成</button>
+
+<todo-item *ngFor="let item of base.activeCategory.todoItems" [todo]="item" [ngClass]="filter" (delete)="onDeleteItem($event)"></todo-item>
+
+<hr>
+
+<div *ngIf="enableAddBox">
+  <input type="text" [(ngModel)]="tmpTodoItem.content"><input type="date" [(ngModel)]="tmpDate">
+  <button (click)="submitAddBox()">添加項目</button><button (click)="closeAddBox()">取消</button>
+</div>
+<button *ngIf="!enableAddBox" (click)="showAddBox()">+</button>
