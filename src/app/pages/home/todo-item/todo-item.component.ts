@@ -10,6 +10,7 @@ export class TodoItemComponent implements OnInit {
 
   @Input() todo: TodoItem;
   @Output() delete: EventEmitter<TodoItem> = new EventEmitter();
+  @Output() edit: EventEmitter<boolean> = new EventEmitter();
 
   tmpContent: string;
   tmpDate: string;
@@ -20,7 +21,7 @@ export class TodoItemComponent implements OnInit {
 
   resetTmp() {
     this.tmpContent = this.todo.content, 
-    this.tmpDate = this.todo.date.toISOString().substr(0, 10);
+    this.tmpDate = this.todo.date.substr(0, 10);
   }
 
   showEditBox() {
@@ -34,8 +35,9 @@ export class TodoItemComponent implements OnInit {
 
   submitEditBox() {
     this.todo.content = this.tmpContent;
-    this.todo.date = new Date(this.tmpDate);
+    this.todo.date = this.tmpDate;
     this.closeEditBox();
+    this.edit.emit();
   }
 
   submitDelete() {

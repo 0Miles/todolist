@@ -23,6 +23,9 @@ export class TodoListComponent implements OnInit {
   onDeleteItem(item: TodoItem) {
     this.base.deleteTodoItem(item);
   }
+  onEditItem() {
+    this.base.saveLocalData();
+  }
 
   resetTmpTodoItem() {
     this.tmpTodoItem = new TodoItem("");
@@ -39,7 +42,7 @@ export class TodoListComponent implements OnInit {
   }
 
   submitAddBox() {
-    this.tmpTodoItem.date = new Date(this.tmpDate);
+    this.tmpTodoItem.date = this.tmpDate;
     this.base.pushTodoItem(this.tmpTodoItem);
     this.closeAddBox();
   }

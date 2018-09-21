@@ -5,7 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class RelativelyDatePipe implements PipeTransform {
 
-  transform(value: any, args?: any): string {
+  transform(value: Date | string): string {
+    if(typeof(value)==='string') {
+      value = new Date(value);
+    }
     const today: Date = new Date();
 
     const todayWeek: number = today.getDay();
@@ -48,9 +51,9 @@ export class RelativelyDatePipe implements PipeTransform {
       case -6: return "上星期一";
     }
     if (todayYear === targetYear) {
-      return `${targetMonth}月${targetDate}日`;
+      return `${targetMonth + 1}月${targetDate}日`;
     } else {
-      return `${targetYear}年${targetMonth}月${targetDate}日`;
+      return `${targetYear}年${targetMonth + 1}月${targetDate}日`;
     }
   }
 

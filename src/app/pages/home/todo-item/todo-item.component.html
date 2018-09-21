@@ -1,5 +1,5 @@
 <div [ngClass]="{'completed': todo.completed, 'uncompleted': !todo.completed}">
-    <input *ngIf="!enableEditBox" type="checkbox" name="todo" [id]="todo.id" [(ngModel)]="todo.completed">
+    <input *ngIf="!enableEditBox" type="checkbox" name="todo" [id]="todo.id" [(ngModel)]="todo.completed" (change)="edit.emit()">
     <label *ngIf="!enableEditBox" [for]="todo.id"></label>
     <div *ngIf="!enableEditBox">
         <div (click)="showEditBox()">{{ todo.content }}</div>

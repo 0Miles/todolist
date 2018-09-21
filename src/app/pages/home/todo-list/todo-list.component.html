@@ -8,7 +8,7 @@
   for="filter-all">全部</label>
 <button (click)="base.clearCompleted()">清除已完成</button>
 
-<todo-item *ngFor="let item of base.activeCategory.todoItems" [todo]="item" [ngClass]="filter" (delete)="onDeleteItem($event)"></todo-item>
+<todo-item *ngFor="let item of base.activeCategory.todoItems" [todo]="item" [ngClass]="filter" (delete)="onDeleteItem($event)" (edit)="onEditItem($event)"></todo-item>
 
 <hr>
 
