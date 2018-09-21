@@ -5,20 +5,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { MenuComponent } from './core/component/menu/menu.component';
 import { PagesModule } from './pages/pages.module';
+import { MenuComponent } from './component/menu/menu.component';
+import { TodoCategoryComponent } from './component/todo-category/todo-category.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent
+    MenuComponent,
+    TodoCategoryComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     CoreModule,
-    PagesModule
+    PagesModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

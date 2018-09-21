@@ -1,0 +1,12 @@
+<todo-category *ngFor="let category of base.todoListData" [category]="category" (changeActive)="onChangeActive($event)" (delete)="onDeleteCategory($event)"></todo-category>
+<button class="add-category" *ngIf="!enableAddBox" (click)="showAddBox()"><span>+</span>新增分類</button>
+
+<div class="add-category-box" *ngIf="enableAddBox">
+    <input type="text" [(ngModel)]="tmpCategory.title">
+    <input type="color" [(ngModel)]="tmpCategory.color">
+    <button (click)="submitAddBox()" class="submit">新增分類</button>
+    <button (click)="closeAddBox()" class="cancel">取消</button>
+</div>
+
+<button routerLink="/list" class="listbutton">List</button>
+<button routerLink="/about" class="aboutbutton">About</button>

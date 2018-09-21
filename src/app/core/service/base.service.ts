@@ -18,19 +18,18 @@ export class BaseService {
   todoListData: Array<TodoCategory> = [
     {
       id: 'inbox',
-      title: 'inbox',
-      color: 'white',
+      title: 'Inbox',
+      color: '#804040',
       todoItems: []
     }
   ];
 
-  activeCategory: TodoCategory = this.todoListData[0];
+  active: number = 0;
   jsonbin: Jsonbin;
 
   constructor(private http: HttpClient) {
     this.jsonbin = new Jsonbin(this.http, environment.jsonbin.token)
     this.loadLocalData();
-    this.setActiveCategory(0);
     this.sync();
   }
 
@@ -58,8 +57,6 @@ export class BaseService {
           }
         },response => {
           this.updateJsonbin();
-        },() => {
-          this.setActiveCategory(0);
         }
       );
   }
@@ -87,24 +84,38 @@ export class BaseService {
 
   // 設定TodoList目前存取分類
   setActiveCategory(category: number | TodoCategory) {
-    if (typeof (category) === 'number') {
-      this.activeCategory = this.todoListData[category];
+    if (typeof(category) === 'number') {
+      this.active = category;
     } else {
-      this.activeCategory[this.todoListData.indexOf(category)];
+      this.active = this.todoListData.indexOf(category);
     }
   }
 
-  pushTodoItem(item: TodoItem, category: TodoCategory=this.activeCategory) {
+  pushCategory(category: TodoCategory) {
+    this.todoListData.push(category);
+    this.saveLocalData();
+  }
+
+  deleteCategory(category: TodoCategory) {
+    const categoryIndex: number = this.todoListData.indexOf(category);
+    if (categoryIndex === this.active) {
+      this.setActiveCategory(this.active-1);
+    }
+    this.todoListData.splice(this.todoListData.indexOf(category), 1);
+    this.saveLocalData();
+  }
+
+  pushTodoItem(item: TodoItem, category: TodoCategory=this.todoListData[this.active]) {
     category.todoItems.push(item);
     this.saveLocalData();
   }
 
-  deleteTodoItem(item: TodoItem, category: TodoCategory = this.activeCategory) {
+  deleteTodoItem(item: TodoItem, category: TodoCategory = this.todoListData[this.active]) {
     category.todoItems.splice(category.todoItems.indexOf(item), 1);
     this.saveLocalData();
   }
 
-  clearCompleted(category: TodoCategory = this.activeCategory) {
+  clearCompleted(category: TodoCategory = this.todoListData[this.active]) {
     category.todoItems = category.todoItems.filter(todo => todo.completed == false);
     this.saveLocalData();
   }

@@ -1,0 +1,5 @@
+<div class="category-button" (click)="changeActiveCategory()">
+    <div class="category-bullet" [style.background-color]="category.color"></div>
+    <div class="category-title">{{ category.title }}</div>
+    <button class="category-delete" (click)="deleteCategory()">×</button>
+</div>

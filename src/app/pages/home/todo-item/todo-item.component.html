@@ -1,15 +1,16 @@
-<div [ngClass]="{'completed': todo.completed, 'uncompleted': !todo.completed}">
-    <input *ngIf="!enableEditBox" type="checkbox" name="todo" [id]="todo.id" [(ngModel)]="todo.completed" (change)="edit.emit()">
-    <label *ngIf="!enableEditBox" [for]="todo.id"></label>
+<div [ngClass]="{'completed': todo.completed, 'uncompleted': !todo.completed}" class="todo-item-container">
     <div *ngIf="!enableEditBox">
-        <div (click)="showEditBox()">{{ todo.content }}</div>
-        <div>{{ todo.date | relativelyDate }}</div>
-        <button (click)="submitDelete()">x</button>
+        <input *ngIf="!enableEditBox" type="checkbox" name="todo" [id]="todo.id" [(ngModel)]="todo.completed" (change)="edit.emit()">
+        <label *ngIf="!enableEditBox" [for]="todo.id" class="checkbox"></label>
+        <span class="todo-item-content" (click)="showEditBox()">{{ todo.content }}</span>
+        <span class="todo-item-date" (click)="showEditBox()">{{ todo.date | relativelyDate }}</span>
+        <button (click)="submitDelete()" class="todo-item-delete">×</button>
     </div>
-    <div *ngIf="enableEditBox">
+    
+    <div *ngIf="enableEditBox" class="todo-item-editbox">
         <input type="text" [(ngModel)]="tmpContent">
         <input type="date" [(ngModel)]="tmpDate">
-        <button (click)="submitEditBox()">儲存修改</button>
-        <button (click)="closeEditBox()">取消</button>
+        <button (click)="submitEditBox()" class="submit">儲存修改</button>
+        <button (click)="closeEditBox()" class="cancel">取消</button>
     </div>
 </div>
