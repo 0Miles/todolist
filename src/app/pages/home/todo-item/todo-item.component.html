@@ -1,16 +1,18 @@
-<div [ngClass]="{'completed': todo.completed, 'uncompleted': !todo.completed}" class="todo-item-container">
-    <div *ngIf="!enableEditBox">
-        <input *ngIf="!enableEditBox" type="checkbox" name="todo" [id]="todo.id" [(ngModel)]="todo.completed" (change)="edit.emit()">
-        <label *ngIf="!enableEditBox" [for]="todo.id" class="checkbox"></label>
-        <span class="todo-item-content" (click)="showEditBox()">{{ todo.content }}</span>
-        <span class="todo-item-date" (click)="showEditBox()">{{ todo.date | relativelyDate }}</span>
-        <button (click)="submitDelete()" class="todo-item-delete">×</button>
+<div [ngClass]="{'completed': todo.completed, 'uncompleted': !todo.completed}" class="todo-item-container animated fadedInLeft">
+
+    <div *ngIf="!editable">
+        <input *ngIf="!editable" type="checkbox" name="todo" [id]="todo.id" [(ngModel)]="todo.completed" (change)="edit.emit()">
+        <label *ngIf="!editable" [for]="todo.id" class="checkbox"></label>
+        <span class="todo-item-content" (click)="editable = true">{{ todo.content }}</span>
+        <span class="todo-item-date" (click)="editable = true">{{ todo.date | relativelyDate }}</span>
+        <button (click)="delete.emit(todo)" class="todo-item-delete">×</button>
     </div>
-    
-    <div *ngIf="enableEditBox" class="todo-item-editbox">
-        <input type="text" [(ngModel)]="tmpContent">
-        <input type="date" [(ngModel)]="tmpDate">
-        <button (click)="submitEditBox()" class="submit">儲存修改</button>
-        <button (click)="closeEditBox()" class="cancel">取消</button>
-    </div>
+    <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm.value)">
+        <div *ngIf="editable" class="todo-item-editbox">
+            <input type="text" name="content" [ngModel]="todo.content">
+            <input type="date" name="date" [ngModel]="todo.date.substr(0, 10)">
+            <button type="submit" class="submit">儲存修改</button>
+            <button (click)="editable = false" class="cancel">取消</button>
+        </div>
+    </form>
 </div>

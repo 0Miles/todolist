@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class RelativelyDatePipe implements PipeTransform {
 
   transform(value: Date | string): string {
-    if(typeof(value)==='string') {
+    if (typeof (value) === 'string') {
       value = new Date(value);
     }
     const today: Date = new Date();
@@ -14,7 +14,7 @@ export class RelativelyDatePipe implements PipeTransform {
     const todayWeek: number = today.getDay();
     const todayYear: number = today.getFullYear();
     const todayNumber: number = Math.floor(+today / 86400000);
-    
+
     const targetDate: number = value.getDate();
     const targetMonth: number = value.getMonth();
     const targetYear: number = value.getFullYear();
@@ -25,7 +25,7 @@ export class RelativelyDatePipe implements PipeTransform {
     const dateDifference: number = targetNumber - todayNumber;
     const sundayDifference: number = targetNumber - sundayNumber;
 
-  
+
     if (dateDifference < 3 && dateDifference > -3) {
       switch (dateDifference) {
         case 0: return "今天";

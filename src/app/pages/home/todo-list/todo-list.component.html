@@ -5,9 +5,9 @@
   <input type="radio" name="filter" id="filter-active" value="filter-active" [(ngModel)]="filter"><label for="filter-active">未完成</label>
 </div>
 
-<h2>{{ base.todoListData[base.active].title }}</h2>
+<h2>{{ base.categories[base.active].title }}</h2>
 
-<todo-item *ngFor="let item of base.todoListData[base.active].todoItems" [todo]="item" [ngClass]="filter" (delete)="onDeleteItem($event)" (edit)="onEditItem($event)"></todo-item>
+<todo-item *ngFor="let item of base.categories[base.active].todoItems" [todo]="item" [ngClass]="filter" (delete)="base.deleteTodoItem($event)" (edit)="base.saveLocalData()"></todo-item>
 
 <div *ngIf="enableAddBox" class="todo-item-editbox">
   <input type="text" [(ngModel)]="tmpTodoItem.content"><input type="date" [(ngModel)]="tmpDate">

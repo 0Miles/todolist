@@ -12,36 +12,16 @@ export class TodoItemComponent implements OnInit {
   @Output() delete: EventEmitter<TodoItem> = new EventEmitter();
   @Output() edit: EventEmitter<boolean> = new EventEmitter();
 
-  tmpContent: string;
-  tmpDate: string;
-  enableEditBox: boolean = false;
+  editable: boolean = false;
 
   ngOnInit() {
   }
 
-  resetTmp() {
-    this.tmpContent = this.todo.content, 
-    this.tmpDate = this.todo.date.substr(0, 10);
-  }
-
-  showEditBox() {
-    this.enableEditBox = true;
-    this.resetTmp();
-  }
-
-  closeEditBox() {
-    this.enableEditBox = false;
-  }
-
-  submitEditBox() {
-    this.todo.content = this.tmpContent;
-    this.todo.date = this.tmpDate;
-    this.closeEditBox();
+  onSubmit(value) {
+    this.todo.content = value.content;
+    this.todo.date = value.date;
+    this.editable = false;
     this.edit.emit();
-  }
-
-  submitDelete() {
-    this.delete.emit(this.todo);
   }
 
 }

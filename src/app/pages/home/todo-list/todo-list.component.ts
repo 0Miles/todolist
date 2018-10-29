@@ -15,16 +15,10 @@ export class TodoListComponent implements OnInit {
   enableAddBox: boolean = false;
   filter: string = "filter-active";
 
-  constructor(private base: BaseService) { }
+  constructor(public base: BaseService) { }
 
   ngOnInit() {
-  }
-
-  onDeleteItem(item: TodoItem) {
-    this.base.deleteTodoItem(item);
-  }
-  onEditItem() {
-    this.base.saveLocalData();
+    
   }
 
   resetTmpTodoItem() {

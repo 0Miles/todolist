@@ -1,4 +1,4 @@
-<todo-category *ngFor="let category of base.todoListData" [category]="category" (changeActive)="onChangeActive($event)" (delete)="onDeleteCategory($event)"></todo-category>
+<todo-category *ngFor="let category of base.categories" [category]="category" (changeActive)="onChangeActive($event)" (delete)="onDeleteCategory($event)"></todo-category>
 <button class="add-category" *ngIf="!enableAddBox" (click)="showAddBox()"><span>+</span>新增分類</button>
 
 <div class="add-category-box" *ngIf="enableAddBox">

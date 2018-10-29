@@ -15,7 +15,7 @@ export interface Data {
 
 export class BaseService {
 
-  todoListData: Array<TodoCategory> = [
+  categories: Array<TodoCategory> = [
     {
       id: 'inbox',
       title: 'Inbox',
@@ -39,23 +39,23 @@ export class BaseService {
       .subscribe(
         (data: Data) => {
           // 判斷是否有本地資料
-          if (localStorage.getItem('lastUpdate') && localStorage.getItem('todoListData')) {
+          if (localStorage['lastUpdate'] && localStorage['categories']) {
 
             // 比對本地資料與jsonbin的最後更新時間，並更新資料
             const jsonbinUpdateDate: Date = new Date(data.lastUpdate);
-            const localUpdateDate: Date = new Date(localStorage.getItem('lastUpdate'));
+            const localUpdateDate: Date = new Date(localStorage['lastUpdate']);
 
             if (jsonbinUpdateDate > localUpdateDate) {
-              this.todoListData = data.todoListData;
+              this.categories = data.todoListData;
             } else {
               this.loadLocalData();
               this.updateJsonbin();
             }
           } else {
             // 若本地資料不存在，使用來自jsonbin的資料
-            this.todoListData = data.todoListData;
+            this.categories = data.todoListData;
           }
-        },response => {
+        }, response => {
           this.updateJsonbin();
         }
       );
@@ -63,59 +63,55 @@ export class BaseService {
 
   // 更新jsonbin上的資料
   updateJsonbin() {
-    const lastUpdate: string = localStorage.getItem('lastUpdate');
-    const data: Data = { 'lastUpdate': lastUpdate, 'todoListData': this.todoListData }
+    const lastUpdate: string = localStorage['lastUpdate'];
+    const data: Data = { 'lastUpdate': lastUpdate, 'todoListData': this.categories }
 
     this.jsonbin.post(data).subscribe();
   }
 
-  // 將todoListData儲存在localStorage，並同步至jsonbin
+  // 將categories儲存在localStorage，並同步至jsonbin
   saveLocalData() {
-    localStorage.setItem('todoListData', JSON.stringify(this.todoListData));
-    localStorage.setItem('lastUpdate', (new Date()).toISOString()); // refresh LastUpdate
+    localStorage['categories'] = JSON.stringify(this.categories);
+    localStorage['lastUpdate'] = (new Date()).toISOString(); // refresh LastUpdate
     this.sync();
   }
 
   loadLocalData() {
-    if(localStorage.getItem('todoListData')){
-      this.todoListData = JSON.parse(localStorage.getItem('todoListData'));
+    if (localStorage['categories']) {
+      this.categories = JSON.parse(localStorage['categories']);
     }
   }
 
-  // 設定TodoList目前存取分類
+  // 設定categories目前存取分類
   setActiveCategory(category: number | TodoCategory) {
-    if (typeof(category) === 'number') {
-      this.active = category;
-    } else {
-      this.active = this.todoListData.indexOf(category);
-    }
+    this.active = typeof (category) === 'number' ? category : this.categories.indexOf(category);
   }
 
   pushCategory(category: TodoCategory) {
-    this.todoListData.push(category);
+    this.categories.push(category);
     this.saveLocalData();
   }
 
   deleteCategory(category: TodoCategory) {
-    const categoryIndex: number = this.todoListData.indexOf(category);
+    const categoryIndex: number = this.categories.indexOf(category);
     if (categoryIndex === this.active) {
-      this.setActiveCategory(this.active-1);
+      this.setActiveCategory(this.active - 1);
     }
-    this.todoListData.splice(this.todoListData.indexOf(category), 1);
+    this.categories.splice(categoryIndex, 1);
     this.saveLocalData();
   }
 
-  pushTodoItem(item: TodoItem, category: TodoCategory=this.todoListData[this.active]) {
+  pushTodoItem(item: TodoItem, category: TodoCategory = this.categories[this.active]) {
     category.todoItems.push(item);
     this.saveLocalData();
   }
 
-  deleteTodoItem(item: TodoItem, category: TodoCategory = this.todoListData[this.active]) {
+  deleteTodoItem(item: TodoItem, category: TodoCategory = this.categories[this.active]) {
     category.todoItems.splice(category.todoItems.indexOf(item), 1);
     this.saveLocalData();
   }
 
-  clearCompleted(category: TodoCategory = this.todoListData[this.active]) {
+  clearCompleted(category: TodoCategory = this.categories[this.active]) {
     category.todoItems = category.todoItems.filter(todo => todo.completed == false);
     this.saveLocalData();
   }
