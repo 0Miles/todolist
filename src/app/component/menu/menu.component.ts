@@ -12,7 +12,7 @@ export class MenuComponent implements OnInit {
   enableAddBox: boolean = false;
   tmpCategory: TodoCategory;
 
-  constructor(private base: BaseService) { }
+  constructor(public base: BaseService) { }
 
   ngOnInit() {
   }
